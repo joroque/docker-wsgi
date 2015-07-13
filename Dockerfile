@@ -21,4 +21,4 @@ RUN echo 'daemon off;' >> /etc/nginx/nginx.conf
 EXPOSE 80
 EXPOSE 443
 
-CMD ["/srv/docker-wsgi/run.sh"]
+CMD ["./start.sh"]
