@@ -9,8 +9,9 @@ RUN yum install -y epel-release
 #RUN yum install -y python-virtualenv python-pip
 
 RUN yum install -y nginx
-RUN rm -rf /etc/nginx/nginx.conf
-RUN ln -s /srv/docker-wsgi/nginx.conf /etc/nginx/nginx.conf
+RUN echo 'daemon off;' >> /etc/nginx/nginx.conf
+#RUN rm -rf /etc/nginx/nginx.conf
+#RUN ln -s /srv/docker-wsgi/nginx.conf /etc/nginx/nginx.conf
 
 # TODO: Move this to run.sh
 #RUN virtualenv .venv
