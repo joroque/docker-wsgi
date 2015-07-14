@@ -4,12 +4,12 @@
 # git clone https://urltomyrepo.
 
 # Create virtual environment
-# virtualenv .venv
-# source .venv/bin/activate
-# pip install -r requirements.txt
+virtualenv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 
 # Run Nginx and redirect stderr to stdout
-nginx 2>&1
+nginx 2>&1 &
 
 # Run Gunicorn and redirect stderr to stdout
-#python wsgi.py &
+python wsgi.py 2>&1 &
