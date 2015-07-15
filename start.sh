@@ -3,13 +3,11 @@
 # Clone repository
 # git clone https://urltomyrepo.
 
-# Create virtual environment
-virtualenv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+# Install Python dependencies
+/srv/venv/bin/pip install -r requirements.txt
 
 # Run Nginx and redirect stderr to stdout
 nginx 2>&1 &
 
 # Run Gunicorn and redirect stderr to stdout
-python wsgi.py 2>&1 &
+/srv/venv/bin/python wsgi.py 2>&1 &
