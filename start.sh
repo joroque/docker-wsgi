@@ -10,4 +10,4 @@
 nginx 2>&1 &
 
 # Run Gunicorn and redirect stderr to stdout
-/srv/venv/bin/python wsgi.py 2>&1 &
+/srv/venv/bin/gunicorn -c gunicorn.conf wsgi:app 2>&1 &
