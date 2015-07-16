@@ -2,12 +2,10 @@
 
 # Clone repository
 # git clone https://urltomyrepo.
+# git checkout -b <branch> origin/<branch>
 
 # Install Python dependencies
 /srv/venv/bin/pip install -r requirements.txt
 
-# Run Nginx and redirect stderr to stdout
-nginx 2>&1 &
-
-# Run Gunicorn and redirect stderr to stdout
-/srv/venv/bin/gunicorn -c gunicorn.conf wsgi:app 2>&1 &
+# Start Supervisor
+supervisord -l /var/log/supervisord.log -j /tmp/supervisord.pid
