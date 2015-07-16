@@ -33,5 +33,12 @@ All socket and pid files are kept under ```/tmp```:
 
 ## Out of the Box
 
+- Nginx
+- PostgreSQL
+- Python (```pip``` & ```virtualenv```)
+- Redis
+
 
 ## License
+
+Copyright © 2015 Jorge Romero. Released under The MIT License.

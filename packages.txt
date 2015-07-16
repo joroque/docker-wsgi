@@ -1,0 +1,5 @@
+nginx
+python-pip
+python-virtualenv
+redis
+supervisor
