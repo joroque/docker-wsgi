@@ -1,44 +1,22 @@
-FROM centos:7
+FROM phusion/baseimage:0.9.16
 MAINTAINER Jorge Romero <romeroqj@gmail.com>
 
+RUN apt-get update
+RUN apt-get install -y memcached nginx postgresql python python-pip redis-server
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# OPS STUFF
+#ADD conf/nginx.conf /etc/nginx/nginx.conf
+#ADD conf/gunicorn.conf /etc/gunicorn.conf
 
-ADD . /tmp
-WORKDIR /tmp
-
-# Install packages
-RUN yum install -y epel-release
-RUN yum install -y nginx python-pip redis sudo supervisor
-RUN pip install gunicorn
-
-# Copy scripts to $PATH
-RUN cp ./bin/entry.sh /usr/local/bin/entry.sh
-RUN cp ./bin/start.sh /usr/local/bin/start.sh
-
-# Copy configuration files
-RUN cp ./etc/nginx.conf /etc/nginx/nginx.conf
-RUN cp ./etc/programs.ini /etc/supervisord.d/programs.ini
-
-# Add user
-RUN adduser --create-home --home-dir /app app
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-
-# # DEV STUFF
-
-# ADD app/requirements.txt /app/requirements.txt
-# WORKDIR /app
-# RUN pip install -r /app/requirements.txt
-
-
+RUN adduser --create-home --home-dir /application application
+RUN usermod -a -G sudo application
 
 EXPOSE 80
 
-CMD bash -C 'entry.sh';'bash'
+CMD ["/sbin/my_init"]
+
 
 # TODO: Move pid and sock files to /var/run
-# TODO: Investigate if yum update is really necessary
 
 # NOTES
 # Command to run container locally during development:

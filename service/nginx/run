@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /sbin/setuser nginx -c /etc/nginx/nginx.conf
