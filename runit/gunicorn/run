@@ -1,0 +1,2 @@
+#!/bin/sh
+exec gunicorn -c /etc/gunicorn/gunicorn.conf wsgi:app

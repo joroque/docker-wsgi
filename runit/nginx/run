@@ -1,0 +1,5 @@
+#!/bin/sh
+# Nginx master process must run as root. Only root processes can listen to
+# well-known ports like 80 or 443 (ports below 1024). Child processes are
+# run by the user specified in the configuration file.
+exec nginx -c /etc/nginx/nginx.conf
