@@ -2,11 +2,11 @@ FROM phusion/baseimage:0.9.16
 MAINTAINER Jorge Romero <romeroqj@gmail.com>
 
 #-------------------------------------------------------------------------------#
-# INSTALL DEPENDENCIES
+# INSTALL SYSTEM DEPENDENCIES
 #
 
 RUN apt-get update
-RUN apt-get install -y memcached nginx postgresql python python-pip redis-server
+RUN apt-get install -y libpq-dev memcached nginx postgresql python python-dev python-pip python-psycopg2 redis-server
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # TODO: Move to uWSGI. I don't like doing this. All Python dependencies should
@@ -14,8 +14,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # See http://cerebralmanifest.com/uwsgi-vs-gunicorn/
 RUN pip install gunicorn
 
+
 #-------------------------------------------------------------------------------#
-# CONFIGURE SERVICES
+# CONFIGURE SERVICES & STARTUP
 #
 # This base image uses runit (http://smarden.org/runit/), which replaces upstart
 # as init daemon. A service is just a folder under /etc/service that contains a
@@ -32,13 +33,20 @@ ADD runit/gunicorn /etc/service/gunicorn
 RUN mkdir /etc/gunicorn
 ADD etc/gunicorn.conf /etc/gunicorn/gunicorn.conf
 
+# Install Python dependencies via pip at container's startup
+#ADD ./etc/my_init.d/pip.sh /etc/my_init.d/pip.sh
+ADD ./etc/my_init.d/pip.sh /root/pip.sh
+
 
 #-------------------------------------------------------------------------------#
 # DEPLOY APPLICATION
 #
 
 RUN mkdir /srv/application
-ADD wsgi.py /srv/application/wsgi.py
+#ADD wsgi.py /srv/application/wsgi.py
+
+EXPOSE 80
+CMD ["/sbin/my_init"]
 
 
 
@@ -53,10 +61,6 @@ ADD wsgi.py /srv/application/wsgi.py
 
 #RUN adduser --create-home --home-dir /application application
 #RUN usermod -a -G sudo application
-
-EXPOSE 80
-
-CMD ["/sbin/my_init"]
 
 
 # TODO: Move pid and sock files to /var/run
