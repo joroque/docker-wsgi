@@ -6,7 +6,7 @@ MAINTAINER Jorge Romero <romeroqj@gmail.com>
 #
 
 RUN apt-get update
-RUN apt-get install -y libpq-dev memcached nginx postgresql python python-dev python-pip python-psycopg2 redis-server
+RUN apt-get install -y libpq-dev memcached nginx postgresql postgresql-contrib python python-dev python-pip python-psycopg2 redis-server
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # TODO: Move to uWSGI. I don't like doing this. All Python dependencies should
@@ -33,9 +33,11 @@ ADD runit/gunicorn /etc/service/gunicorn
 RUN mkdir /etc/gunicorn
 ADD etc/gunicorn.conf /etc/gunicorn/gunicorn.conf
 
+# PostgreSQL
+ADD runit/postgres /etc/service/postgres
+
 # Install Python dependencies via pip at container's startup
-#ADD ./etc/my_init.d/pip.sh /etc/my_init.d/pip.sh
-ADD ./etc/my_init.d/pip.sh /root/pip.sh
+ADD ./etc/my_init.d/pip.sh /etc/my_init.d/pip.sh
 
 
 #-------------------------------------------------------------------------------#
@@ -43,7 +45,6 @@ ADD ./etc/my_init.d/pip.sh /root/pip.sh
 #
 
 RUN mkdir /srv/application
-#ADD wsgi.py /srv/application/wsgi.py
 
 EXPOSE 80
 CMD ["/sbin/my_init"]

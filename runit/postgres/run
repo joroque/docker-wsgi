@@ -1,0 +1,8 @@
+#!/bin/sh
+# PostgreSQL creates a cluster at installation time:
+# Creating new cluster 9.3/main ...
+#   config /etc/postgresql/9.3/main
+#   data   /var/lib/postgresql/9.3/main
+#   locale en_US.UTF-8
+#   port   5432
+exec /sbin/setuser postgres /usr/lib/postgresql/9.3/bin/pg_ctl -D /var/lib/postgresql/9.3/main -l logfile start
